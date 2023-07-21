@@ -11,9 +11,10 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var backgroundPicture: UIImageView!
     
+    var isGaming = false
     var count = 0
     var matches = 0
-//    var timer = Timer()
+    var timer = Timer()
 
     
     var state = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -32,7 +33,7 @@ class ViewController: UIViewController {
         
         
         
-        if state[sender.tag - 1] != 0 /*|| isGaming*/ {
+        if state[sender.tag - 1] != 0 || isGaming {
             return
         }
         
@@ -74,8 +75,10 @@ class ViewController: UIViewController {
         
         //if we have 2 unmatch pics,we clear them with timer
         if count == 2 {
+            isGaming = true
             _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
                 self.clear()
+                self.isGaming = false
 
             }
         }
@@ -83,7 +86,7 @@ class ViewController: UIViewController {
         print(matches)
         //if we reach all 8 matches we call an alert
         if matches == 8 {
-//            timer.invalidate()
+            timer.invalidate()
             let alert = UIAlertController(title: "You win!", message: "Congratulations!", preferredStyle: .alert)
 
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {
@@ -101,7 +104,7 @@ class ViewController: UIViewController {
     @objc func clear(){
         for i in 0...15{
             if state[i] == 1{
-//                isGaming = false
+                isGaming = false
                 let button = view.viewWithTag(i+1) as! UIButton
                 button.setBackgroundImage(nil, for: .normal)
                 state[i] = 0
@@ -112,7 +115,7 @@ class ViewController: UIViewController {
     //if we reach all 8 matches we delete all button pics,states and count
     func clearAll(){
         for i in 0...15{
-//            isGaming = false
+            isGaming = false
             let button = view.viewWithTag(i+1) as! UIButton
             button.setBackgroundImage(nil, for: .normal)
             state[i] = 0
